@@ -1,0 +1,72 @@
+
+memory,15000,m
+
+file,1,h2co3_EE_ccf12tz.int
+file,2,h2co3_EE_ccf12tz.wfu
+
+orient,mass
+geometry={
+O1
+C,O1,B1
+O2,C,B2,O1,A1
+H1,O2,B3,C,A2,O1,0.0
+O3,C,B2,O1,A1,H1,180.0
+H2,O3,B3,C,A2,O1,0.0
+}
+ B1=                  1.21742568 ANG
+ B2=                  1.35261183 ANG
+ A1=                125.92848763 DEGREE
+ B3=                  0.97078208 ANG
+ A2=                105.67504482 DEGREE
+
+mass,iso
+basis=vtz-f12
+
+{hf
+start,atden}
+ccsd(t)-f12
+optg
+freq,symm=auto
+put,molden,molden.dat
+
+basis=vtz-f12              
+{hf                        
+start,atden}               
+ccsd(t)-f12,freeze_save=1891.2
+
+basis=vdz-f12              
+{hf                        
+start,atden}               
+ccsd(t)-f12,freeze_save=1892.2
+
+PROC 12D                    
+symmetry,auto               
+abinitio                    
+basis=vtz-f12               
+int                         
+{hf                         
+start,atden}                
+ccsd(t)-f12,freeze_start=1891.2
+ENDPROC                     
+
+PROC 34D                    
+symmetry,auto               
+abinitio                    
+basis=vdz-f12               
+int                         
+{hf                         
+start,atden}                
+ccsd(t)-f12,freeze_start=1892.2
+ENDPROC                     
+
+{xsurf,start1D=12D,sym=auto,info=2,ndim=4         
+graph,ndim=2                                      
+scalnm,show=1                                     
+vmult,start2D=12D,start3D=34D,start4D=34D,Multi=4 
+disk,where=home,extern='../h2co3_EE_ccf12tz_4D.xpot'}
+
+poly,pot=poly,info=1,ndim=4                    
+vscf,pot=poly,info=1,ndim=4,combi=2,            
+vci,pot=poly,info=1,ndim=4,combi=2,analyze=0.2, 
+
+
